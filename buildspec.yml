@@ -1,19 +1,25 @@
-version: 1.0
+version: 0.2
 
 phases:
   install:
     commands:
-      - echo Installing Nginx
+      - echo Installing dependencies
       - sudo apt-get update
       - sudo apt-get install nginx -y
+  pre_build:
+    commands:
+      - echo Preparing build environment
   build:
     commands:
-      - echo Build on `date`
-      - cp index.html /var/www/html/
-  post build:
+      - echo Build started on `date`
+      - echo Copying source files to Nginx directory
+      - sudo cp index.html /var/www/html/
+  post_build:
     commands:
       - echo Configuring Nginx
+      - sudo systemctl start nginx
+      - sudo systemctl enable nginx
 
-  artifacts:
-    files:
-      - /var/www/html/index.html 
+artifacts:
+  files:
+    - index.html
