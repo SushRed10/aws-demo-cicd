@@ -3,21 +3,16 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo Installing dependencies
-      - sudo apt-get update
+      - echo "Starting install phase"
+      - sudo apt-get clean
+      - sudo apt-get update -y || (echo "apt-get update failed" && exit 1)
       - sudo apt-get install nginx -y
-  pre_build:
-    commands:
-      - echo Preparing build environment
   build:
     commands:
-      - echo Build started on `date`
-      - echo Copying source files to Nginx directory
-      - sudo cp index.html /var/www/html/
-  post_build:
-    commands:
-      - echo Configuring Nginx
+      - echo "Starting build phase"
+      - cp index.html /var/www/html/
 
 artifacts:
   files:
-    - index.html
+    - /var/www/html/index.html
+
